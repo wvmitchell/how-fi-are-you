@@ -1,6 +1,15 @@
+var myChart
+
 function compoundInterestWithMonthlyContibutionsReturns(startingValue, monthlyContrib, years, rateOfReturn) {
-    return startingValue * (1 + rateOfReturn) ** years + 
-      (monthlyContrib * (1 + rateOfReturn) ** years - 1) / rateOfReturn;
+  // assumes annual compounding
+  // https://www.thecalculatorsite.com/articles/finance/future-value-formula.php
+  return startingValue * ((1 + rateOfReturn)** years) + 
+    ((monthlyContrib * 12) * (((1 + rateOfReturn)**years) - 1) / rateOfReturn);
+}
+
+function getFIValue() {
+  var spending = parseInt(document.getElementById('spending').value);
+  return spending * 25;
 }
 
 function getFIScore() {
@@ -19,10 +28,9 @@ function getYearsToFI() {
   var expectedNetWorth = 0;
   while(necessaryNetWorth > expectedNetWorth) {
     expectedNetWorth = compoundInterestWithMonthlyContibutionsReturns(netWorth, savingsRate, yearsToFi, 0.06);
-    console.log('year ' + yearsToFi + ' net worth: ' + expectedNetWorth)
     yearsToFi++;
   }
-  return yearsToFi;
+  return yearsToFi - 1;
 }
 
 function getChartValues() {
@@ -90,17 +98,25 @@ function giveYearsToFiSummary(yearsToFi) {
 
 function calculateValues() {
   resetSummaries()
+  var fiValue = getFIValue();
   var fiScore = getFIScore();
   var yearsToFi = getYearsToFI();
   var chartValues = getChartValues();
   var savingsPercentage = getSavingsPercentage();
   giveSummaries(fiScore, yearsToFi, savingsPercentage);
-  makeChart(chartValues)
+  myChart ? updateChart(chartValues, fiValue) : makeChart(chartValues, fiValue);
 }
 
-function makeChart(chartValues) {
+function updateChart(chartValues, fiValue) {
+  myChart.data.labels = Object.keys(chartValues);
+  myChart.data.datasets[0].data = Object.values(chartValues);
+  myChart.data.datasets[1].data = new Array(Object.keys(chartValues).length).fill(fiValue);
+  myChart.update();
+}
+
+function makeChart(chartValues, fiValue) {
   var ctx = document.getElementById('myChart');
-  var myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Object.keys(chartValues),
@@ -110,6 +126,13 @@ function makeChart(chartValues) {
         backgroundColor: 'rgba(205, 38, 83, 0.2)',
         borderColor: 'rgba(205, 38, 83, 1)',
         borderWidth: 1,
+      },
+      {
+        label: 'FI Goal',
+        data: new Array(Object.keys(chartValues).length).fill(fiValue),
+        borderColor: 'rgba(205, 38, 83, 1)',
+        backgroundColor: 'rgba(205, 38, 83, 0)',
+        type: 'line',
       }]
     },
     options: {
