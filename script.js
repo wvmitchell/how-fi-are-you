@@ -25,6 +25,22 @@ function getYearsToFI() {
   return yearsToFi;
 }
 
+function getChartValues() {
+  var spending = document.getElementById('spending').value;
+  var netWorth = document.getElementById('net-worth').value;
+  var savingsRate = document.getElementById('savings-rate').value;
+  var necessaryNetWorth = spending * 25;
+  var yearsToFi = 1;
+  var expectedNetWorth = 0;
+  var chartValues = {}
+  while(necessaryNetWorth > expectedNetWorth) {
+    expectedNetWorth = compoundInterestWithMonthlyContibutionsReturns(netWorth, savingsRate, yearsToFi, 0.06);
+    chartValues[`Year ${yearsToFi}`] = expectedNetWorth.toFixed(2);
+    yearsToFi++;
+  }
+  return chartValues;
+}
+
 function getSavingsPercentage() {
   var grossIncome = parseInt(document.getElementById('gross-income').value);
   var savingsRate = document.getElementById('savings-rate').value * 12;
@@ -76,8 +92,36 @@ function calculateValues() {
   resetSummaries()
   var fiScore = getFIScore();
   var yearsToFi = getYearsToFI();
+  var chartValues = getChartValues();
   var savingsPercentage = getSavingsPercentage();
   giveSummaries(fiScore, yearsToFi, savingsPercentage);
+  makeChart(chartValues)
+}
+
+function makeChart(chartValues) {
+  var ctx = document.getElementById('myChart');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(chartValues),
+      datasets: [{
+        label: 'Net Worth $',
+        data: Object.values(chartValues),
+        backgroundColor: 'rgba(205, 38, 83, 0.2)',
+        borderColor: 'rgba(205, 38, 83, 1)',
+        borderWidth: 1,
+      }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: false
+                }
+            }]
+        }
+    }
+  })
 }
 
 document.getElementById('submit').addEventListener('click', calculateValues);
