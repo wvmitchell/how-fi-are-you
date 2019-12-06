@@ -9,52 +9,56 @@
   </head>
   <body>
     <h1>How FI are you?</h1>
-    <form action="/">
-      <label>What's your annual gross income</label>
-      <input type="number" id="gross-income" />
-      <br>
-      <label>How much do you spend annually?</label>
-      <input type="number" id="spending" />
-      <br>
-      <label>What is your current net worth?</label>
-      <input type="number" id="net-worth" />
-      <br>
-      <label>How much are you saving per month?</label>
-      <input type="number" id="savings-rate" />
-      <br>
-      <button type="button" id="submit">How FI am I?</button>
-    </form>
-    <p id="fi-score"></p>
-    <p id="fi-summary-0" class="fi-summary inactive">
-      The journey of 1000 miles begins with a single step.
-      You're here, so congratulations on taking the first step!
-      With discipline and hard work, you can be FI to. It starts today!
-    </p>
-    <p id="fi-summary-1" class="fi-summary inactive">
-      You're on the path, way to go! It can be hard to see 
-      the top of the mountian when you've just started. Don't 
-      forget to celebrate the small wins along the way. You're 
-      already closer to FI than you were when you started!
-    </p>
-    <p id="fi-summary-2" class="fi-summary inactive">
-      You're over half way to FI! You'll really start to feel 
-      the acceration now! Your foundation is solidly built, just 
-      make sure you're keeping your eyes on the prize.
-    </p>
-    <p id="fi-summary-3" class="fi-summary inactive">
-      You're so close! Getting this far has taken sacrifice, 
-      determination, and attention to detail. You're not there 
-      yet, but a life of financial independence is getting close!
-    </p>
-    <p id="fi-summary-4" class="fi-summary inactive">
-      You've done it, you've reached FI! Your time is now your own. 
-      Using the lessons that you've learned along the way, you 
-      should never need to do work you find unsatisfying again. 
-      How can you give back to this community?
-    </p>
-    <p id="savings-percentage"></p>
-    <p id="years-to-fi"></p>
-    <canvas id="myChart"></canvas>
+    <div id='left'>
+      <form action="/">
+        <label>What's your annual gross income</label>
+        <input type="number" id="gross-income" />
+        <br>
+        <label>How much do you spend annually?</label>
+        <input type="number" id="spending" />
+        <br>
+        <label>What is your current net worth?</label>
+        <input type="number" id="net-worth" />
+        <br>
+        <label>How much are you saving per month?</label>
+        <input type="number" id="savings-rate" />
+        <br>
+        <button type="button" id="submit">How FI am I?</button>
+      </form>
+      <p id="fi-score"></p>
+      <p id="fi-summary-0" class="fi-summary inactive">
+        The journey of 1000 miles begins with a single step.
+        You're here, so congratulations on taking the first step!
+        With discipline and hard work, you can be FI to. It starts today!
+      </p>
+      <p id="fi-summary-1" class="fi-summary inactive">
+        You're on the path, way to go! It can be hard to see 
+        the top of the mountian when you've just started. Don't 
+        forget to celebrate the small wins along the way. You're 
+        already closer to FI than you were when you started!
+      </p>
+      <p id="fi-summary-2" class="fi-summary inactive">
+        You're over half way to FI! You'll really start to feel 
+        the acceration now! Your foundation is solidly built, just 
+        make sure you're keeping your eyes on the prize.
+      </p>
+      <p id="fi-summary-3" class="fi-summary inactive">
+        You're so close! Getting this far has taken sacrifice, 
+        determination, and attention to detail. You're not there 
+        yet, but a life of financial independence is getting close!
+      </p>
+      <p id="fi-summary-4" class="fi-summary inactive">
+        You've done it, you've reached FI! Your time is now your own. 
+        Using the lessons that you've learned along the way, you 
+        should never need to do work you find unsatisfying again. 
+        How can you give back to this community?
+      </p>
+      <p id="savings-percentage"></p>
+      <p id="years-to-fi"></p>
+    </div>
+    <div id="right">
+      <canvas id="myChart"></canvas>
+    </div>
     <script type="text/javascript" src="script.js"></script>
   </body>
 </html>

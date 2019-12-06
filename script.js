@@ -49,6 +49,19 @@ function getChartValues() {
   return chartValues;
 }
 
+function getAdjustedChartValues(yearsToFi) {
+  var spending = document.getElementById('spending').value;
+  var netWorth = document.getElementById('net-worth').value;
+  var savingsRate = document.getElementById('savings-rate').value;
+  var expectedNetWorth = 0;
+  var adjustedChartValues = {}
+  for(var i = 1; i <= yearsToFi; i++) {
+    expectedNetWorth = compoundInterestWithMonthlyContibutionsReturns(netWorth, savingsRate * 2, i, 0.06);
+    adjustedChartValues[`Year ${i}`] = expectedNetWorth.toFixed(2);
+  }
+  return adjustedChartValues;
+}
+
 function getSavingsPercentage() {
   var grossIncome = parseInt(document.getElementById('gross-income').value);
   var savingsRate = document.getElementById('savings-rate').value * 12;
@@ -102,37 +115,46 @@ function calculateValues() {
   var fiScore = getFIScore();
   var yearsToFi = getYearsToFI();
   var chartValues = getChartValues();
+  var adjustedChartValues = getAdjustedChartValues(yearsToFi);
   var savingsPercentage = getSavingsPercentage();
   giveSummaries(fiScore, yearsToFi, savingsPercentage);
-  myChart ? updateChart(chartValues, fiValue) : makeChart(chartValues, fiValue);
+  myChart ? updateChart(chartValues, adjustedChartValues, fiValue) : makeChart(chartValues, adjustedChartValues, fiValue);
 }
 
-function updateChart(chartValues, fiValue) {
+function updateChart(chartValues, adjustedChartValues, fiValue) {
   myChart.data.labels = Object.keys(chartValues);
   myChart.data.datasets[0].data = Object.values(chartValues);
-  myChart.data.datasets[1].data = new Array(Object.keys(chartValues).length).fill(fiValue);
+  myChart.data.datasets[1].data = Object.values(adjustedChartValues);
+  myChart.data.datasets[2].data = new Array(Object.keys(chartValues).length).fill(fiValue);
   myChart.update();
 }
 
-function makeChart(chartValues, fiValue) {
+function makeChart(chartValues, adjustedChartValues, fiValue) {
   var ctx = document.getElementById('myChart');
   myChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Object.keys(chartValues),
       datasets: [{
-        label: 'Net Worth $',
-        data: Object.values(chartValues),
-        backgroundColor: 'rgba(205, 38, 83, 0.2)',
-        borderColor: 'rgba(205, 38, 83, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'FI Goal',
-        data: new Array(Object.keys(chartValues).length).fill(fiValue),
-        borderColor: 'rgba(205, 38, 83, 1)',
-        backgroundColor: 'rgba(205, 38, 83, 0)',
-        type: 'line',
+          label: 'Net Worth $',
+          data: Object.values(chartValues),
+          backgroundColor: 'rgba(205, 38, 83, 0.2)',
+          borderColor: 'rgba(205, 38, 83, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Saving 2X',
+          data: Object.values(adjustedChartValues),
+          backgroundColor: 'rgba(126, 176, 155, 0.2)',
+          borderColor: 'rgba(126, 176, 155, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'FI Goal',
+          data: new Array(Object.keys(chartValues).length).fill(fiValue),
+          borderColor: 'rgba(65, 60, 88, 1)',
+          backgroundColor: 'rgba(205, 38, 83, 0)',
+          type: 'line',
       }]
     },
     options: {
