@@ -24,7 +24,7 @@ function getYearsToFI() {
   var netWorth = document.getElementById('net-worth').value;
   var savingsRate = document.getElementById('savings-rate').value;
   var necessaryNetWorth = spending * 25;
-  var yearsToFi = 1;
+  var yearsToFi = 0;
   var expectedNetWorth = 0;
   while(necessaryNetWorth > expectedNetWorth) {
     expectedNetWorth = compoundInterestWithMonthlyContibutionsReturns(netWorth, savingsRate, yearsToFi, 0.06);
@@ -38,7 +38,7 @@ function getChartValues() {
   var netWorth = document.getElementById('net-worth').value;
   var savingsRate = document.getElementById('savings-rate').value;
   var necessaryNetWorth = spending * 25;
-  var yearsToFi = 1;
+  var yearsToFi = 0;
   var expectedNetWorth = 0;
   var chartValues = {}
   while(necessaryNetWorth > expectedNetWorth) {
@@ -55,7 +55,7 @@ function getAdjustedChartValues(yearsToFi) {
   var savingsRate = document.getElementById('savings-rate').value;
   var expectedNetWorth = 0;
   var adjustedChartValues = {}
-  for(var i = 1; i <= yearsToFi; i++) {
+  for(var i = 0; i <= yearsToFi; i++) {
     expectedNetWorth = compoundInterestWithMonthlyContibutionsReturns(netWorth, savingsRate * 2, i, 0.06);
     adjustedChartValues[`Year ${i}`] = expectedNetWorth.toFixed(2);
   }
@@ -70,9 +70,16 @@ function getSavingsPercentage() {
 
 function resetSummaries() {
   var fiSummaries = document.getElementsByClassName('fi-summary');
+  var savingsSummaries = document.getElementsByClassName('savings-summary');
+  var timeSummaries = document.getElementsByClassName('time-to-fi');
   for(var i = 0; i < fiSummaries.length; i++) {
     fiSummaries[i].classList.add('inactive')
+    savingsSummaries[i].classList.add('inactive')
+    timeSummaries[i].classList.add('inactive')
   }
+  document.getElementById('fi-score').innerText = '';
+  document.getElementById('savings-percentage').innerText = '';
+  document.getElementById('years-to-fi').innerText = '';
 }
 
 function giveSummaries(fiScore, yearsToFi, savingsPercentage) {
@@ -93,20 +100,58 @@ function giveFISummary(score) {
   } else if(score > 0 && score < 50) {
     statement = 'fi-summary-1';
   } else {
-    statement = 'fi-summary-1'
+    statement = 'fi-summary-0'
   }
-  fiScore.innerText = `You are ${score}% FI`;
-  document.getElementById(statement).classList.remove('inactive')
+
+  if(score || score === 0) {
+    fiScore.innerText = `You are ${score}% FI`;
+    document.getElementById(statement).classList.remove('inactive')
+  }
 }
 
 function giveSavingsSummary(savingsPercentage) {
   var savingsStatement = document.getElementById('savings-percentage');
-  savingsStatement.innerText = `You're currently saving ${savingsPercentage}% of your income`;
+  var statementId;
+
+  if(savingsPercentage < 10) {
+    statementId = 'savings-summary-0';
+  } else if(savingsPercentage >= 10 && savingsPercentage < 20) {
+    statementId = 'savings-summary-1';
+  } else if(savingsPercentage >= 20 && savingsPercentage < 50) {
+    statementId = 'savings-summary-2';
+  } else if(savingsPercentage >= 50 && savingsPercentage <= 100) {
+    statementId = 'savings-summary-3';
+  } else if(savingsPercentage > 100) {
+    statementId = 'savings-summary-4';
+  }
+
+  if(savingsPercentage) {
+    savingsStatement.innerText = `You're currently saving ${savingsPercentage}% of your income`;
+    document.getElementById(statementId).classList.remove('inactive');
+  }
 }
 
 function giveYearsToFiSummary(yearsToFi) {
   var yearsToFiStatement = document.getElementById('years-to-fi');
-  yearsToFiStatement.innerText = `You're on pace to reach FI in ${yearsToFi} years.`;
+  var statementId;
+  if(yearsToFi >= 30) {
+    statementId = 'time-to-fi-0';
+  } else if(yearsToFi < 30 && yearsToFi >= 20) {
+    statementId = 'time-to-fi-1';
+  } else if(yearsToFi < 20 && yearsToFi >= 10) {
+    statementId = 'time-to-fi-2';
+  } else if(yearsToFi < 10 && yearsToFi >= 1) {
+    statementId = 'time-to-fi-3';
+  } else if(yearsToFi < 1) {
+    statementId = 'time-to-fi-4';
+  }
+
+  var willNotMakeIt = 'You\'re not on pace to reach FI!';
+  var inProgressText = yearsToFi > 100 ? willNotMakeIt : `You're on pace to reach FI in ${yearsToFi} years.`;
+  var finishedText = 'You\'ve made it to FI!'
+
+  yearsToFiStatement.innerText = yearsToFi > 0 ? inProgressText : finishedText;
+  document.getElementById(statementId).classList.remove('inactive');
 }
 
 function calculateValues() {
@@ -130,20 +175,23 @@ function updateChart(chartValues, adjustedChartValues, fiValue) {
 }
 
 function makeChart(chartValues, adjustedChartValues, fiValue) {
+  var calcDescription = document.getElementById('calculator-description');
   var ctx = document.getElementById('myChart');
+  calcDescription.classList.add('inactive');
+  ctx.classList.remove('inactive');
   myChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Object.keys(chartValues),
       datasets: [{
-          label: 'Net Worth $',
+          label: 'Your Net Worth',
           data: Object.values(chartValues),
           backgroundColor: 'rgba(205, 38, 83, 0.2)',
           borderColor: 'rgba(205, 38, 83, 1)',
           borderWidth: 1,
         },
         {
-          label: 'Saving 2X',
+          label: 'If you doubled your savings rate',
           data: Object.values(adjustedChartValues),
           backgroundColor: 'rgba(126, 176, 155, 0.2)',
           borderColor: 'rgba(126, 176, 155, 1)',
