@@ -2,10 +2,38 @@
   display: none;
 }
 
+/*=== How FI am I rules ===*/
+#fi-container {
+  display: flex;
+  flex-direction: row;
+	flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#fi-container label {
+	font-family: NonBreakingSpaceOverride, "Hoefler Text", Garamond, "Times New Roman", serif;
+}
+
 #left {
-  width: 50%;
+	padding: 0;
+  width: 25%;
 }
 
 #right {
-  width: 50%;
+	padding: 0;
+  width: 70%;
+}
+
+#summaries {
+	padding: 0;
+}
+
+@media only screen and (max-width: 800px) {
+  #left {
+    padding-bottom: 20px;
+  }
+
+	#left, #right {
+		width: 100%;
+	}
 }
