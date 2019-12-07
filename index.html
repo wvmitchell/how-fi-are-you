@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link type="text/css" rel="stylesheet" href="theme.css" />
+    <link type="text/css" rel="stylesheet" href="print.css" />
     <link type="text/css" rel="stylesheet" href="styles.css" />
     <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"
@@ -8,57 +10,86 @@
     <title>How FI are you?</title>
   </head>
   <body>
-    <h1>How FI are you?</h1>
-    <div id='left'>
-      <form action="/">
-        <label>What's your annual gross income</label>
-        <input type="number" id="gross-income" />
-        <br>
-        <label>How much do you spend annually?</label>
-        <input type="number" id="spending" />
-        <br>
-        <label>What is your current net worth?</label>
-        <input type="number" id="net-worth" />
-        <br>
-        <label>How much are you saving per month?</label>
-        <input type="number" id="savings-rate" />
-        <br>
-        <button type="button" id="submit">How FI am I?</button>
-      </form>
-      <p id="fi-score"></p>
+    <div id='fi-container'>
+      <section id='left'>
+        <form action="/">
+          <label>What's your annual gross income?</label>
+          <input type="number" min="0" id="gross-income" placeholder="$$$ of income each year" />
+          <br>
+          <label>How much do you spend annually?</label>
+          <input type="number" min="0" id="spending" placeholder="$$$ you spend each year"/>
+          <br>
+          <label>What is your current net worth?</label>
+          <input type="number" min="0" id="net-worth" placeholder="$$$ of assets minus debts"/>
+          <br>
+          <label>How much are you saving per month?</label>
+          <input type="number" min="0" id="savings-rate" placeholder="$$$ you save each month"/>
+          <br>
+          <button type="button" id="submit">How FI am I?</button>
+        </form>
+      </section>
+      <section id="right">
+        <img 
+          id="calculator-description"
+          src="https://i1.wp.com/eatyourcake.net/wp-content/uploads/2019/12/iStock-693125574-scaled.jpg"
+          alt="watch your savings grow over time"
+        />
+        <canvas id="myChart" class="inactive"></canvas>
+      </section>
+    </div>
+    <section id="summaries">
+      <h3 id="fi-score"></h3>
       <p id="fi-summary-0" class="fi-summary inactive">
-        The journey of 1000 miles begins with a single step.
-        You're here, so congratulations on taking the first step!
-        With discipline and hard work, you can be FI to. It starts today!
+        The journey of 1000 miles begins with a single step. You're here, so congratulations on taking the first step! With discipline and hard work, you can be FI too. It starts today! Look for ways to decrease your spending while increasing your savings and your income. There is no magic to achieving FI, just hard work, and determination!
       </p>
       <p id="fi-summary-1" class="fi-summary inactive">
-        You're on the path, way to go! It can be hard to see 
-        the top of the mountian when you've just started. Don't 
-        forget to celebrate the small wins along the way. You're 
-        already closer to FI than you were when you started!
+        You're on the path, way to go! It can be hard to see the top of the mountain when you've just started. Don't forget to celebrate the small wins along the way. You're already closer to FI than you were when you started!
       </p>
       <p id="fi-summary-2" class="fi-summary inactive">
-        You're over half way to FI! You'll really start to feel 
-        the acceration now! Your foundation is solidly built, just 
-        make sure you're keeping your eyes on the prize.
+        You're over halfway to FI! You'll start to feel the acceleration now! You've solidly built your foundation, make sure you're keeping your eyes on the prize.
       </p>
       <p id="fi-summary-3" class="fi-summary inactive">
-        You're so close! Getting this far has taken sacrifice, 
-        determination, and attention to detail. You're not there 
-        yet, but a life of financial independence is getting close!
+        You're so close! Getting this far has taken sacrifice, determination, and attention to detail. You're not there yet, but a life of financial independence is getting close!
       </p>
       <p id="fi-summary-4" class="fi-summary inactive">
-        You've done it, you've reached FI! Your time is now your own. 
-        Using the lessons that you've learned along the way, you 
-        should never need to do work you find unsatisfying again. 
-        How can you give back to this community?
+        You've done it; you've reached FI! Your time is now your own. Using the lessons that you've learned along the way, you should never need to do work that you find unsatisfying again. How can you give back to this community?
       </p>
-      <p id="savings-percentage"></p>
-      <p id="years-to-fi"></p>
-    </div>
-    <div id="right">
-      <canvas id="myChart"></canvas>
-    </div>
+      <h3 id="savings-percentage"></h3>
+      <p id="savings-summary-0" class="savings-summary inactive">
+        It's going to take a long time for your savings to grow at this rate. Try increasing how much you save per month, and see how much more
+quickly you'd be able to reach FI.
+      </p>
+      <p id="savings-summary-1" class="savings-summary inactive">
+        Not too shabby! You're saving about as much as conventional wisdom says
+        it is necessary. Keep that up, and you'll likely reach FI,
+        <em>eventually</em>. Try boosting your savings rate to see how much more quickly you'd be able to reach FI.
+      </p>
+      <p id="savings-summary-2" class="savings-summary inactive">
+        Now that's a healthy-looking savings rate! Did you know that the average savings rate is only around 8%? And many individuals save less than 2% of their income, or even have a negative savings rate! Keep it up! Try boosting your savings rate even a bit higher to see how much more quickly you'd be able to reach FI.
+      </p>
+      <p id="savings-summary-3" class="savings-summary inactive">
+        Whoa, big saver! You're saving over half of your income! That's impressive. You're truly on the path to FI!
+      </p>
+      <p id="savings-summary-4" class="savings-summary inactive">
+        Wow, you're saving more than 100% of your income. That's truly unbelivable. No seriously, I don't believe you, how are you saving more money than you earn? What kind of black magic is this? Teach me!
+      </p>
+      <h3 id="years-to-fi"></h3>
+      <p id="time-to-fi-0" class="time-to-fi inactive">
+        Financial independence is still a very long ways off. Are you doing everything you can do to decrease your spending? Every $1000 of spending you can eliminate annually is $25,000 that you don't need to achieve FI! Look for opportunities to save more, and make sure you're working to maximize your income.
+      </p>
+      <p id="time-to-fi-1" class="time-to-fi inactive">
+        Financial independence is on the horizon, but it's still more than two decades away. You'll likely get there, but you can make it much sooner if you can decrease your spending and increase your savings. Every $1000 of spending you can eliminate annually is $25,000 that you don't need to achieve FI! Look for opportunities to save more, and make sure you're working to maximize your income.
+      </p>
+      <p id="time-to-fi-2" class="time-to-fi inactive">
+        You're making the right moves! Financial independence isn't here yet, but if you continue at your current pace, it's inevitable. Now might be a good time to start thinking about how you'll spend your time in FI. What is it that you want to do with your life? How can you help others to achieve FI?
+      </p>
+      <p id="time-to-fi-3" class="time-to-fi inactive">
+        Hey, you're almost there! Financial independence takes sacrifice, determination, and a willingness to cut your path through life. You've been working diligently to get to this point, and FI is right around the corner!
+      </p>
+      <p id="time-to-fi-4" class="time-to-fi inactive">
+        How's the view from up there?! You've made it to financial independence! From now on, your time is your own to do with what you please. What will you do now that you're off the hamster wheel? How can you make this a better world?
+      </p>
+    </section>
     <script type="text/javascript" src="script.js"></script>
   </body>
 </html>
