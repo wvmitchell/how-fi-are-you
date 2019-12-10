@@ -206,13 +206,21 @@ function makeChart(chartValues, adjustedChartValues, fiValue) {
       }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: false
-                }
-            }]
-        }
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        display: true,
+        fontSize: 20,
+        text: 'Projected net worth over time',
+      },
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: false
+              }
+          }]
+      }
     }
   })
 }
