@@ -93,11 +93,11 @@ function giveFISummary(score) {
   var statement = ''
   if(score >= 100) {
     statement = 'fi-summary-4';
-  } else if(score >= 75 && score < 100) {
+  } else if(score >= 75) {
     statement = 'fi-summary-3';
-  } else if(score >= 50 && score < 75) {
+  } else if(score >= 50) {
     statement = 'fi-summary-2';
-  } else if(score > 0 && score < 50) {
+  } else if(score > 0) {
     statement = 'fi-summary-1';
   } else {
     statement = 'fi-summary-0'
@@ -115,11 +115,11 @@ function giveSavingsSummary(savingsPercentage) {
 
   if(savingsPercentage < 10) {
     statementId = 'savings-summary-0';
-  } else if(savingsPercentage >= 10 && savingsPercentage < 20) {
+  } else if(savingsPercentage < 20) {
     statementId = 'savings-summary-1';
-  } else if(savingsPercentage >= 20 && savingsPercentage < 50) {
+  } else if(savingsPercentage < 50) {
     statementId = 'savings-summary-2';
-  } else if(savingsPercentage >= 50 && savingsPercentage <= 100) {
+  } else if(savingsPercentage <= 100) {
     statementId = 'savings-summary-3';
   } else if(savingsPercentage > 100) {
     statementId = 'savings-summary-4';
@@ -136,11 +136,11 @@ function giveYearsToFiSummary(yearsToFi) {
   var statementId;
   if(yearsToFi >= 30) {
     statementId = 'time-to-fi-0';
-  } else if(yearsToFi < 30 && yearsToFi >= 20) {
+  } else if(yearsToFi >= 20) {
     statementId = 'time-to-fi-1';
-  } else if(yearsToFi < 20 && yearsToFi >= 10) {
+  } else if(yearsToFi >= 10) {
     statementId = 'time-to-fi-2';
-  } else if(yearsToFi < 10 && yearsToFi >= 1) {
+  } else if(yearsToFi >= 1) {
     statementId = 'time-to-fi-3';
   } else if(yearsToFi < 1) {
     statementId = 'time-to-fi-4';
